@@ -1,28 +1,74 @@
-REMIX DEFAULT WORKSPACE
+This Solidity contract demonstrates basic error handling using require, assert, and revert statements. It includes functionality to set a value and perform division with appropriate error checks.
 
-Remix default workspace is present when:
-i. Remix loads for the very first time 
-ii. A new workspace is created with 'Default' template
-iii. There are no files existing in the File Explorer
+Features:
+setValue: Sets a public state variable value with input validation.
 
-This workspace contains 3 directories:
+performDivision: Performs division of two numbers with error handling for zero denominators and indivisible numerators.
 
-1. 'contracts': Holds three contracts with increasing levels of complexity.
-2. 'scripts': Contains four typescript files to deploy a contract. It is explained below.
-3. 'tests': Contains one Solidity test file for 'Ballot' contract & one JS test file for 'Storage' contract.
+Contract Details
+State Variable
+uint public value;
+Stores a value that is publicly accessible.
+Functions
+setValue(uint _value)
+Sets the state variable value to a specified _value.
 
-SCRIPTS
+Parameters:
+uint _value: The new value to set.
 
-The 'scripts' folder has four typescript files which help to deploy the 'Storage' contract using 'web3.js' and 'ethers.js' libraries.
+Error Handling:
+require(_value > 0, "Value must be greater than 0.");
+Ensures the input value _value is greater than zero.
 
-For the deployment of any other contract, just update the contract's name from 'Storage' to the desired contract and provide constructor arguments accordingly 
-in the file `deploy_with_ethers.ts` or  `deploy_with_web3.ts`
+assert(value != _value);
+Ensures the new value is different from the current value.
 
-In the 'tests' folder there is a script containing Mocha-Chai unit tests for 'Storage' contract.
+performDivision(uint _numerator, uint _denominator)
+Performs division of two numbers with error handling.
 
-To run a script, right click on file name in the file explorer and click 'Run'. Remember, Solidity file must already be compiled.
-Output from script will appear in remix terminal.
+Parameters:
+uint _numerator: The numerator for division.
+uint _denominator: The denominator for division.
+Returns:
+uint: The result of the division.
+Error Handling:
+require(_denominator != 0, "Cannot divide by zero.");
+Ensures the denominator is not zero.
+if (_numerator % _denominator != 0) { revert("Numerator must be divisible by denominator"); }
+Reverts the transaction if the numerator is not divisible by the denominator.
+Usage
+Prerequisites
+Install Remix IDE or use any other Solidity development environment.
+Steps
+Compile the Contract:
 
-Please note, require/import is supported in a limited manner for Remix supported modules.
-For now, modules supported by Remix are ethers, web3, swarmgw, chai, multihashes, remix and hardhat only for hardhat.ethers object/plugin.
-For unsupported modules, an error like this will be thrown: '<module_name> module require is not supported by Remix IDE' will be shown.
+Open Remix IDE.
+Create a new file ErrorHandlingContract.sol and paste the contract code.
+Select the appropriate compiler version (0.8.1).
+Compile the contract.
+Deploy the Contract:
+
+Go to the "Deploy & Run Transactions" tab.
+Ensure the environment is set to "JavaScript VM (London)".
+Deploy the ErrorHandlingContract.
+Interact with the Contract:
+
+Use the setValue function to set a positive value.
+Attempt to set the value to zero or the same value to see the require and assert statements in action.
+Use the performDivision function to divide two numbers.
+Try dividing by zero or using a numerator not divisible by the denominator to see the require and revert statements in action.
+
+
+Example
+Here’s an example of how to use the contract functions:
+
+Set Value:
+Call setValue(10) to set the value to 10.
+Attempt to call setValue(0) to trigger the require error.
+Attempt to call setValue(10) again to trigger the assert error.
+Perform Division:
+
+Call performDivision(10, 2) to get the result 5.
+Attempt to call performDivision(10, 0) to trigger the require error.
+Attempt to call performDivision(10, 3) to trigger the revert error.
+License
